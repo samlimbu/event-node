@@ -286,11 +286,11 @@ router.post('/change_role', (req, res, next) => {
 });
 
 //passport 
-router.get('/status', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/status', (req, res, next) => {
     console.log('/status');
     res.json({ user: req.user });
 });
-router.get('/status2', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/status2', (req, res, next) => {
     console.log('/status');
     res.json({ user: req.user });
 });
