@@ -55,7 +55,7 @@ app.get('/', (req, res, next) => {
 app.use('/polls', pollRouter);
 
 const hostname = '127.0.0.1';
-const port = process.env.PORT || 8000 || 3000;
+const port = process.env.PORT || 8000 || 8080 || 3000;
 app.listen(port, hostname, () => {
   console.log(`server started on port ${port}`)
 });
