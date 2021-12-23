@@ -14,7 +14,6 @@ router.get('/', (request, response, next) => {
         throw(err);
         sse.Stream.emit('push', 'message', data);
     });
-    //{msg: 'admin has decline event fsad', response: 'decline', icon: 'clear'} {msg: 'admin has accept event fsad', response: 'accept', icon: 'check'}
 
     sse.Stream.on('push', (event, data) => {
         response.write('event: ' + String(event) + '\n' + 'data: ' + JSON.stringify(data) + '\n' + 'retry: 10000\n' + '\n\n');

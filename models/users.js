@@ -92,9 +92,7 @@ module.exports.getUserByUsername=function(username, callback){
      const query = {username:username}
      User.findOne(query, callback);
 }
-// module.exports.findByIdAndUpdate = function (id, body, callback){
-//     User.findByIdAndUpdate(id, body, callback);
-// }
+
 
 
 module.exports.updateUserByQuery = function(query, obj, callback){

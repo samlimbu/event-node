@@ -36,22 +36,14 @@ router.get('/id/:id', (req, res) => {
 })
 router.put('/update/:id', (req, res) => {
     console.log(req.params, req.body);
-    // categoryModel.findOne({ name: req.body.name }, (err, data) => {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     if (data) {
-    //         res.json({ success: false, msg: 'Category already exists' });
-    //     }
-    //     else if (!data) {
+
             categoryModel.findOneAndUpdate({ _id: req.params.id },req.body ,(err, data) => {
                 if (err) {
                     throw err;
                 }
                 res.json(data);
             })
-    //     }
-    // })    
+    
 })
     router.get('/', (req, res, next) => {
         console.log(typeof (req.query.pageSize + 0));

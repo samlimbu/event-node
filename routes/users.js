@@ -285,7 +285,7 @@ router.post('/change_role', (req, res, next) => {
     });
 });
 
-//passport 
+//test
 router.get('/status', (req, res, next) => {
     console.log('/status');
     res.json({ user: req.user });

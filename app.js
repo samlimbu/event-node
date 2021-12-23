@@ -4,7 +4,6 @@ const cors = require('cors');
 const session = require('express-session');
 const config = require('./config/database');
 const categoryRouter = require('./routes/category');
-const pollRouter = require('./routes/poll');
 const eventRouter = require('./routes/event');
 const eventDetailRouter = require('./routes/event_detail');
 const sseRouter = require('./routes/sse');
@@ -52,7 +51,7 @@ app.use('/event_detail',passport.authenticate('jwt', { session: false }), eventD
 app.get('/test', (req, res, next) => {
   res.json({ res: 'ok' });
 });
-app.use('/polls', pollRouter);
+
 
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 8000 || 4000 || 3000 || 8080;
@@ -60,5 +59,5 @@ const port = process.env.PORT || 8000 || 4000 || 3000 || 8080;
 //   console.log(`server started on port ${port} hn ${hostname}`)
 // });
 app.listen(port, () => {
-  console.log(`server started on port ${port} hn ${hostname}`)
+  console.log(`server started on port ${port} on hostname ${hostname}`)
 });
