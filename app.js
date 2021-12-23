@@ -29,7 +29,7 @@ mongoose.connection.on('error', (err) => {
 
 const app = express(config.database);
 const userRouter = require('./routes/users');
-
+app.options('*', cors()) 
 app.use(cors());
 app.use(express.json({
   limit: '50mb'
