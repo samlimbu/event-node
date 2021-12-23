@@ -1,0 +1,22 @@
+{
+  "name": "event-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "atob": "*",
+    "bcryptjs": "*",
+    "cors": "*",
+    "express": "^4.17.1",
+    "jsonwebtoken": "*",
+    "mongoose": "^6.0.14",
+    "passport": "*",
+    "passport-jwt": "*",
+    "express-session":"*"
+  }
+}
