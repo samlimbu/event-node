@@ -49,7 +49,7 @@ app.use('/category', passport.authenticate('jwt', { session: false }),categoryRo
 app.use('/event',passport.authenticate('jwt', { session: false }), eventRouter);
 app.use('/user', userRouter);
 app.use('/event_detail',passport.authenticate('jwt', { session: false }), eventDetailRouter);
-app.get('/', (req, res, next) => {
+app.get('/test', (req, res, next) => {
   res.json({ res: 'ok' });
 });
 app.use('/polls', pollRouter);
