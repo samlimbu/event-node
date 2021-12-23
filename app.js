@@ -8,7 +8,7 @@ const pollRouter = require('./routes/poll');
 const eventRouter = require('./routes/event');
 const eventDetailRouter = require('./routes/event_detail');
 const sseRouter = require('./routes/sse');
-
+const userRouter = require('./routes/users');
 const passport = require('passport');
 require('./config/passport')(passport)
 
@@ -28,8 +28,8 @@ mongoose.connection.on('error', (err) => {
 })
 
 const app = express(config.database);
-const userRouter = require('./routes/users');
-app.options('*', cors()) 
+
+// app.options('*', cors()) 
 app.use(cors());
 app.use(express.json({
   limit: '50mb'
@@ -56,6 +56,9 @@ app.use('/polls', pollRouter);
 
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 8000 || 4000 || 3000 || 8080;
-app.listen(port, hostname, () => {
+// app.listen(port, hostname, () => {
+//   console.log(`server started on port ${port} hn ${hostname}`)
+// });
+app.listen(port, () => {
   console.log(`server started on port ${port} hn ${hostname}`)
 });
