@@ -11,22 +11,39 @@ function wait(ms) {
     }
 }
 
-router.get('/search',(req,res,next)=>{
+router.get('/search', (req, res, next) => {
     const itemperpage = parseInt(req.query.pageSize, 10);
     const pageNo = parseInt(req.query.page, 10);
-    let re = new RegExp(req.query.q,'i');
+    let re = new RegExp(req.query.q, 'i');
     console.log(req.query.q);
-    eventModel.find({"$or":[{'title' : re}, {'date' : re}, {'category' : re}]},(err,data)=>{
+    eventModel.find({ "$or": [{ 'title': re }, { 'date': re }, { 'category': re }] }, (err, data) => {
         res.json(data);
         if (err)
             throw err;
     }).sort([[req.query.sortby, req.query.order]]).skip(itemperpage * (pageNo - 1)).limit(itemperpage);
-   
+
 })
 
 router.get('/all', (req, res, next) => {
     eventModel.find({})
-    .populate({ path: "category_objid", select: {}}).exec((err, data) => {
+        .populate({ path: "category_objid", select: {} }).exec((err, data) => {
+            if (err)
+                throw err;
+            console.log(data);
+            res.json(data);
+        });
+})
+
+router.get('/allevent_categories', (req, res, next) => {
+    eventModel.aggregate([
+        {
+          $group: {
+            _id: '$category',
+            count: { $sum: 1 }
+          }
+        }
+      ],
+ (err, data) => {
         if (err)
             throw err;
         console.log(data);
@@ -35,13 +52,16 @@ router.get('/all', (req, res, next) => {
 })
 
 router.get('/by_category_id/:id', (req, res, next) => {
+    wait(1000);
     console.log('cat id', req.params.id);
-    eventModel.find({category_objid: req.params.id}).sort({ date:1 })
-    .populate({ path: "category_objid", select: {}}).exec((err, data) => {
-        if (err)
-            throw err;
-        res.json(data);
-    });
+    const itemperpage = parseInt(req.query.pageSize, 10);
+    const pageNo = parseInt(req.query.page, 10);
+    eventModel.find({ category_objid: req.params.id }).sort({ date: 1 }).skip(itemperpage * (pageNo - 1)).limit(itemperpage)
+        .populate({ path: "category_objid", select: {} }).exec((err, data) => {
+            if (err)
+                throw err;
+            res.json(data);
+        });
 })
 
 
@@ -58,7 +78,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/id/:id', (req, res, next) => {
-   
+
     if (!isNaN(req.params.id)) {
         console.log(req.params.id);
         eventModel.find({ id: req.params.id }, (err, data) => {
@@ -73,18 +93,24 @@ router.get('/id/:id', (req, res, next) => {
 })
 
 router.put('/update/:id', (req, res, next) => {
- 
+
     console.log('update', req.params.id);
     eventModel.findOneAndUpdate({ id: req.params.id }, req.body, (err, data) => {
         if (err)
             throw err;
-            console.log(data);
+        console.log(data);
         res.json(data);
     });
 })
 
 router.get('/count', (req, res, next) => {
     eventModel.count({}, (err, data) => {
+        res.json(data);
+    })
+})
+
+router.get('/count_by_id/:id', (req, res, next) => {
+    eventModel.count({ category_objid: req.params.id }, (err, data) => {
         res.json(data);
     })
 })
@@ -126,7 +152,7 @@ router.post('/add', (req, res, next) => {
                 throw err;
             }
             console.log('addd event', req.body);
-            sse.setStream({msg: `${req.body.title} event created`,icon:'event'});
+            sse.setStream({ msg: `${req.body.title} event created`, icon: 'event' });
             mongoose.model('event').find({}, function (err, data) {
 
                 if (err) {

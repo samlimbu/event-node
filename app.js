@@ -55,9 +55,7 @@ app.get('/test', (req, res, next) => {
 
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 8000 || 4000 || 3000 || 8080;
-// app.listen(port, hostname, () => {
-//   console.log(`server started on port ${port} hn ${hostname}`)
-// });
+
 app.listen(port, () => {
   console.log(`server started on port ${port} on hostname ${hostname}`)
 });

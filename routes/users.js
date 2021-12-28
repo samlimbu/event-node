@@ -285,6 +285,23 @@ router.post('/change_role', (req, res, next) => {
     });
 });
 
+router.get('/roles_count', (req, res, next) => {
+    User.aggregate([
+        {
+          $group: {
+            _id: '$roles',
+            count: { $sum: 1 }
+          }
+        }
+      ],
+ (err, data) => {
+        if (err)
+            throw err;
+        console.log(data);
+        res.json(data);
+    });
+})
+
 //test
 router.get('/status', (req, res, next) => {
     console.log('/status');
