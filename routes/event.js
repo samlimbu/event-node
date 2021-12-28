@@ -35,8 +35,10 @@ router.get('/all', (req, res, next) => {
 })
 
 router.get('/allevent_categories', (req, res, next) => {
+  
     eventModel.aggregate([
         {
+          
           $group: {
             _id: '$category',
             count: { $sum: 1 }
@@ -121,7 +123,18 @@ router.get('/count', (req, res, next) => {
 })
 
 router.get('/count_by_id/:id', (req, res, next) => {
-    eventModel.count({ category_objid: req.params.id }, (err, data) => {
+    console.log('rq count', req.query);
+    let query = { category_objid: req.params.id};
+    if(req.query.expired=='true'){
+        query.date = { $lte: req.query.date };
+        console.log(query);
+    }
+    else if(req.query.expired=='false'){
+        query.date = { $gte: req.query.date };
+       console.log(query);
+    }
+console.log('query...',query);
+    eventModel.count(query, (err, data) => {
         res.json(data);
     })
 })
