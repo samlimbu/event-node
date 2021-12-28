@@ -129,7 +129,7 @@ router.post('/authenticate', (req, res, next) => {
 });
 //profile 
 router.post('/profile', (req, res, next) => {
-    console.log('/profile', req.body);
+   
     User.getUserByUsername(req.body.username, (err, user) => {
         if (err) {
             throw err
@@ -144,8 +144,7 @@ router.post('/profile', (req, res, next) => {
 });
 //reset password
 router.post('/reset_password', (req, res, next) => {
-    console.log('reset pass', req.body);
-    console.log(atob(req.body.password));
+
     let newUser = new User({
         first_name: req.body.first_name,
         middle_name: req.body.middle_name,
@@ -155,7 +154,7 @@ router.post('/reset_password', (req, res, next) => {
         password: req.body.password,
         roles: req.body.roles
     });
-    console.log('new user body', newUser);
+ 
     User.changePassword(newUser, (err, data) => {
         if (err) {
             console.log(err);
@@ -173,12 +172,11 @@ router.post('/reset_password', (req, res, next) => {
 //change password
 router.post('/change_password', (req, res, next) => {
     const auth = atob(req.body.auth).split(':');
-    console.log(req.body);
+  
     const username = auth[0];
     const password = auth[1];
     const newPassword = auth[2];
-    console.log(username, password);
-    console.log(newPassword);
+ 
     User.getUserByUsername(username, (err, user) => {
         if (err) {
             throw err
@@ -187,7 +185,7 @@ router.post('/change_password', (req, res, next) => {
             return res.json({ success: false, msg: 'User not found' });
         }
         User.comparePassword(password, user.password, (err, isMatch) => {
-            console.log('.....', user);
+           
             if (err) throw err;
             if (isMatch) {
                 console.log('isMatch', isMatch, user);

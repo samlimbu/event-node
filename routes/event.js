@@ -53,10 +53,21 @@ router.get('/allevent_categories', (req, res, next) => {
 
 router.get('/by_category_id/:id', (req, res, next) => {
     wait(1000);
-    console.log('cat id', req.params.id);
+    console.log(req.query);
+    let query = { category_objid: req.params.id};
+    if(req.query.expired=='true'){
+        query.date = { $lte: req.query.date };
+        console.log(query);
+    }
+    else if(req.query.expired=='false'){
+        query.date = { $gte: req.query.date };
+       console.log(query);
+    }
+    //, $lte:
+    
     const itemperpage = parseInt(req.query.pageSize, 10);
     const pageNo = parseInt(req.query.page, 10);
-    eventModel.find({ category_objid: req.params.id }).sort({ date: 1 }).skip(itemperpage * (pageNo - 1)).limit(itemperpage)
+    eventModel.find(query).sort({ date: 1 }).skip(itemperpage * (pageNo - 1)).limit(itemperpage)
         .populate({ path: "category_objid", select: {} }).exec((err, data) => {
             if (err)
                 throw err;

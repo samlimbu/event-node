@@ -131,7 +131,7 @@ module.exports.changePassword = function(newUser, callback){
 module.exports.comparePassword = function(candidatePassword, hash, callback){
      bcrypt.compare(candidatePassword, hash, (err, isMatch)=>{
           if(err) throw err;
-          console.log('cpassword',candidatePassword, hash, isMatch);
+         // console.log('cpassword',candidatePassword, hash, isMatch);
           callback(null, isMatch);
 
      });
