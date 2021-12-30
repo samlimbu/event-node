@@ -13,12 +13,9 @@ setStream = function (obj) {
     sseModel.create(obj, (err, data) => {
         if(err)
         throw(err);
-        sseModel.find({},(err,data)=>{
-            if(err)
-            throw(err);
-            Stream.emit('push', 'message', data);
-        })
+        console.log(data);
       
+        Stream.emit('push', 'message', data);
     })
 }
 
