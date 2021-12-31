@@ -3,13 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const eventModel = require('../models/event');
 const sse = require('../models/sse')
-function wait(ms) {
-    var start = new Date().getTime();
-    var end = start;
-    while (end < start + ms) {
-        end = new Date().getTime();
-    }
-}
+
 
 router.get('/search', (req, res, next) => {
     const itemperpage = parseInt(req.query.pageSize, 10);
@@ -35,38 +29,38 @@ router.get('/all', (req, res, next) => {
 })
 
 router.get('/allevent_categories', (req, res, next) => {
-  
+
     eventModel.aggregate([
         {
-          
-          $group: {
-            _id: '$category',
-            count: { $sum: 1 }
-          }
+
+            $group: {
+                _id: '$category',
+                count: { $sum: 1 }
+            }
         }
-      ],
- (err, data) => {
-        if (err)
-            throw err;
-        console.log(data);
-        res.json(data);
-    });
+    ],
+        (err, data) => {
+            if (err)
+                throw err;
+            console.log(data);
+            res.json(data);
+        });
 })
 
 router.get('/by_category_id/:id', (req, res, next) => {
-    wait(1000);
+    wait(500);
     console.log(req.query);
-    let query = { category_objid: req.params.id};
-    if(req.query.expired=='true'){
+    let query = { category_objid: req.params.id };
+    if (req.query.expired == 'true') {
         query.date = { $lte: req.query.date };
         console.log(query);
     }
-    else if(req.query.expired=='false'){
+    else if (req.query.expired == 'false') {
         query.date = { $gte: req.query.date };
-       console.log(query);
+        console.log(query);
     }
     //, $lte:
-    
+
     const itemperpage = parseInt(req.query.pageSize, 10);
     const pageNo = parseInt(req.query.page, 10);
     eventModel.find(query).sort({ date: 1 }).skip(itemperpage * (pageNo - 1)).limit(itemperpage)
@@ -124,16 +118,16 @@ router.get('/count', (req, res, next) => {
 
 router.get('/count_by_id/:id', (req, res, next) => {
     console.log('rq count', req.query);
-    let query = { category_objid: req.params.id};
-    if(req.query.expired=='true'){
+    let query = { category_objid: req.params.id };
+    if (req.query.expired == 'true') {
         query.date = { $lte: req.query.date };
         console.log(query);
     }
-    else if(req.query.expired=='false'){
+    else if (req.query.expired == 'false') {
         query.date = { $gte: req.query.date };
-       console.log(query);
+        console.log(query);
     }
-console.log('query...',query);
+    console.log('query...', query);
     eventModel.count(query, (err, data) => {
         res.json(data);
     })

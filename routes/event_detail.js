@@ -3,14 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const eventDetailModel = require('../models/event_detail');
 const sse = require('../models/sse');
-
-function wait(ms) {
-    var start = new Date().getTime();
-    var end = start;
-    while (end < start + ms) {
-        end = new Date().getTime();
-    }
-}
+const test = require('../test/testfn');
 
 router.get('/all', (req, res, next) => {
     eventDetailModel.find({}, (err, data) => {
@@ -22,6 +15,7 @@ router.get('/all', (req, res, next) => {
 })
 
 router.get('/username/:username', (req, res, next) => {
+    wait(500);
     console.log(req.query);
     console.log(req.params);
     eventDetailModel.find({ username: req.params.username }, (err, data) => {
@@ -33,7 +27,7 @@ router.get('/username/:username', (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-    wait(500);
+ 
     console.log(typeof (req.query.pageSize + 0));
     console.log(req.headers);
     console.log(req.query.page);
@@ -49,7 +43,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/id/:id', (req, res, next) => {
-    wait(500);
+  
     if (!isNaN(req.params.id)) {
         console.log(req.params.id);
         eventDetailModel.find({ id: req.params.id }, (err, data) => {
@@ -104,7 +98,7 @@ router.get('/event_id/all/:id', (req, res, next) => {
 })
 
 router.put('/update/:id', (req, res, next) => {
-    wait(500);
+ 
     console.log('update', req.params.id);
     eventDetailModel.findOneAndUpdate({ id: req.params.id }, req.body, (err, data) => {
         if (err)
@@ -121,7 +115,7 @@ router.get('/count', (req, res, next) => {
 })
 
 router.post('/delete', (req, res, next) => {
-    wait(1000);
+  
     eventDetailModel.deleteOne({ id: req.body.id }, (err, data) => {
         if (err)
             throw err;

@@ -6,7 +6,11 @@ const config = require('../config/database');
 const User = require('../models/users');
 var atob = require('atob');
 require('../config/passport')(passport)
+const test = require('../test/testfn');
+
+
 router.get('/', (req, res, next) => {
+    test.wait(1000);
     console.log(typeof (req.query.pageSize + 0));
     const itemperpage = parseInt(req.query.pageSize, 10);
     const pageNo = parseInt(req.query.page, 10);
@@ -20,6 +24,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/count', (req, res, next) => {
+    test.wait(500);
     User.count({}, (err, data) => {
         res.json(data);
     })
@@ -47,11 +52,6 @@ router.post('/insert_many', (req, res, next) => {
         }
     })
 })
-
-
-
-
-
 
 router.post('/register', (req, res, next) => {
     console.log(req.body);
@@ -86,7 +86,6 @@ router.post('/register', (req, res, next) => {
 });
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-
     console.log('auth', req.body);
     //const auth = atob(req.body.auth).split(':');
     const username = req.body.username;
@@ -129,7 +128,6 @@ router.post('/authenticate', (req, res, next) => {
 });
 //profile 
 router.post('/profile', (req, res, next) => {
-   
     User.getUserByUsername(req.body.username, (err, user) => {
         if (err) {
             throw err
